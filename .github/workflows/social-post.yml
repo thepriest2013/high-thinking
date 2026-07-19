@@ -1,0 +1,88 @@
+name: Social auto-post
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/content/blog/**'
+
+permissions:
+  contents: read
+
+jobs:
+  post-to-x:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Detect newly published posts and tweet them
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_CHANNEL_ID: '6a5cac65e2638b94d7960747'
+          SITE_URL: 'https://high-thinking.fit'
+        run: |
+          set -e
+          changed_files=$(git diff --name-only HEAD^ HEAD -- 'src/content/blog/*.md' || true)
+
+          if [ -z "$changed_files" ]; then
+            echo "No blog post files changed in this push."
+            exit 0
+          fi
+
+          for file in $changed_files; do
+            if [ ! -f "$file" ]; then
+              echo "Skipping deleted file: $file"
+              continue
+            fi
+
+            new_draft=$(grep -m1 '^draft:' "$file" | sed -E 's/draft:\s*//' | tr -d ' \r')
+            old_draft=$(git show "HEAD^:$file" 2>/dev/null | grep -m1 '^draft:' | sed -E 's/draft:\s*//' | tr -d ' \r' || true)
+
+            if [ -z "$old_draft" ]; then
+              old_draft="true"
+            fi
+
+            echo "File: $file | old draft: $old_draft | new draft: $new_draft"
+
+            if [ "$new_draft" = "false" ] && [ "$old_draft" != "false" ]; then
+              title=$(grep -m1 '^title:' "$file" | sed -E "s/title:\s*'(.*)'/\1/")
+              slug=$(basename "$file" .md)
+              link="$SITE_URL/blog/$slug/"
+              text="$title $link"
+
+              echo "Newly published post detected: $title"
+              echo "Posting to X..."
+
+              payload=$(jq -n \
+                --arg text "$text" \
+                --arg channelId "$BUFFER_CHANNEL_ID" \
+                '{
+                  query: "mutation CreatePost($input: CreatePostInput!) { createPost(input: $input) { ... on PostActionSuccess { post { id } } ... on InvalidInputError { message } ... on UnauthorizedError { message } ... on UnexpectedError { message } ... on NotFoundError { message } ... on RestProxyError { message } ... on LimitReachedError { message } } }",
+                  variables: {
+                    input: {
+                      channelId: $channelId,
+                      text: $text,
+                      schedulingType: "automatic",
+                      mode: "shareNow"
+                    }
+                  }
+                }')
+
+              response=$(curl -s -X POST https://api.buffer.com \
+                -H "Authorization: Bearer $BUFFER_API_KEY" \
+                -H "Content-Type: application/json" \
+                -d "$payload")
+
+              echo "Buffer API response: $response"
+
+              if echo "$response" | jq -e '.errors' > /dev/null 2>&1; then
+                echo "::error::Buffer API returned an error - see log above"
+                exit 1
+              fi
+            else
+              echo "Not a new publish (already live or still draft) - skipping."
+            fi
+          done
