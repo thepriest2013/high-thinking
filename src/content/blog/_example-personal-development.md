@@ -3,7 +3,7 @@ title: '[Example] A Personal Development Post'
 description: 'Template post showing the frontmatter fields for this category.'
 pubDate: 2026-07-19
 category: 'personal-development'
-draft: false
+draft: true
 ---
 
 This is a placeholder post so you can see the frontmatter shape for the **personal-development** category. It won't appear on the site while `draft: true`.
