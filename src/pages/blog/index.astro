@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const dateFmt = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+const categoryLabel: Record<string, string> = {
+  'personal-development': 'Personal Development',
+  'personal-finance': 'Personal Finance',
+  geopolitics: 'Geopolitics',
+  general: 'General',
+};
+---
+
+<BaseLayout title="Archive — High Thinking">
+  <h1 style="font-weight:400;">Archive</h1>
+  <ul class="post-list">
+    {
+      posts.map((post) => (
+        <li>
+          <span class="category-tag">{categoryLabel[post.data.category]}</span>
+          <h3>
+            <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+          </h3>
+          <p class="post-meta">{dateFmt.format(post.data.pubDate)}</p>
+          <p class="post-excerpt">{post.data.description}</p>
+        </li>
+      ))
+    }
+  </ul>
+  {posts.length === 0 && <p style="color: var(--ink-muted);">Nothing published yet.</p>}
+</BaseLayout>

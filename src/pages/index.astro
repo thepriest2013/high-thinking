@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Logo from '../components/Logo.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+const recent = posts.slice(0, 5);
+
+const dateFmt = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+const categoryLabel: Record<string, string> = {
+  'personal-development': 'Personal Development',
+  'personal-finance': 'Personal Finance',
+  geopolitics: 'Geopolitics',
+  general: 'General',
+};
+---
+
+<BaseLayout title="High Thinking — The Priest">
+  <section style="text-align:center; padding: 24px 0 56px;">
+    <div style="display:flex; justify-content:center;"><Logo size={72} /></div>
+    <h1 style="font-weight:400; font-size: clamp(30px, 6vw, 46px); margin: 20px 0 4px; text-wrap: balance;">
+      High Thinking
+    </h1>
+    <p class="category-tag" style="margin: 0 0 20px;">— The Priest —</p>
+    <p style="max-width: 46ch; margin: 0 auto; color: var(--ink-muted);">
+      Nine steps, one climb. Notes on mind, money, and the world.
+    </p>
+  </section>
+
+  <p class="eyebrow">Recent</p>
+  <ul class="post-list">
+    {
+      recent.map((post) => (
+        <li>
+          <span class="category-tag">{categoryLabel[post.data.category]}</span>
+          <h2>
+            <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+          </h2>
+          <p class="post-meta">{dateFmt.format(post.data.pubDate)}</p>
+          <p class="post-excerpt">{post.data.description}</p>
+        </li>
+      ))
+    }
+  </ul>
+
+  {posts.length > 5 && (
+    <p style="margin-top: 24px;"><a href="/blog/">See the full archive &rarr;</a></p>
+  )}
+</BaseLayout>

@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const dateFmt = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+const categoryLabel: Record<string, string> = {
+  'personal-development': 'Personal Development',
+  'personal-finance': 'Personal Finance',
+  geopolitics: 'Geopolitics',
+  general: 'General',
+};
+---
+
+<BaseLayout title={`${post.data.title} — High Thinking`} description={post.data.description}>
+  <article>
+    <p class="category-tag">{categoryLabel[post.data.category]}</p>
+    <h1>{post.data.title}</h1>
+    <p class="post-meta">
+      {dateFmt.format(post.data.pubDate)}
+      {post.data.updatedDate && ` (updated ${dateFmt.format(post.data.updatedDate)})`}
+    </p>
+    <Content />
+  </article>
+  <p><a href="/blog/">&larr; Back to archive</a></p>
+</BaseLayout>

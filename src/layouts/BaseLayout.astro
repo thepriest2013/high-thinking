@@ -1,0 +1,45 @@
+---
+import Logo from '../components/Logo.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'High Thinking — notes on mind, money, and the world, from The Priest.' } = Astro.props;
+const { pathname } = Astro.url;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="site-header">
+        <a class="brand" href="/">
+          <Logo size={30} />
+          <span>High Thinking</span>
+        </a>
+        <nav class="site-nav">
+          <a href="/" aria-current={pathname === '/' ? 'page' : undefined}>Home</a>
+          <a href="/blog/" aria-current={pathname.startsWith('/blog') ? 'page' : undefined}>Archive</a>
+          <a href="/about/" aria-current={pathname === '/about/' ? 'page' : undefined}>About</a>
+        </nav>
+      </header>
+      <main>
+        <slot />
+      </main>
+      <footer class="site-footer">
+        <span>High Thinking &mdash; The Priest</span>
+        <span>Mind &middot; Money &middot; World</span>
+      </footer>
+    </div>
+  </body>
+</html>
