@@ -1,6 +1,6 @@
 ---
 title: 'Eighteen Years of Rolling the Dice'
-description: 'From Obama to Trump to Biden to Trump again, America has spent eighteen years experimenting its way out of the 2008 financial crisis. It hasn't worked yet.'
+description: 'From Obama to Trump to Biden to Trump again, America has spent eighteen years experimenting its way out of the 2008 financial crisis. It has not worked yet.'
 pubDate: 2026-07-26
 category: 'geopolitics'
 draft: false
