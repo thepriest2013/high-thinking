@@ -1,0 +1,41 @@
+---
+title: "Sovereignty Isn't a Vibe"
+description: 'Balaji Srinivasan tried to build a network state in an abandoned Chinese real-estate project in Malaysia. Malaysia won in about three weeks.'
+pubDate: 2026-08-01
+category: 'geopolitics'
+draft: false
+---
+
+Ever since there's been such a thing as a nation state, some group of people has wanted out of it. That's not a new impulse — it's older than the nation state itself, really, just aimed at whatever the dominant form of enclosure happened to be at the time. What's new is the tooling.
+
+## An old itch, a new toolkit
+
+The itch got a proper philosophical scaffolding in the 20th century — Ayn Rand and the libertarian tradition gave it a language: the state as parasite, the individual as the only legitimate unit, bureaucracy as the enemy of the free man. And it's not hard to see why that lands. Modern states are enormous, procedural, and often genuinely unresponsive to the people living under them. Most of America's own founding mythology runs on this exact chord — flee the old world's constraints, build something cleaner from scratch. It's a good story. It's one of the best stories. That's exactly why it keeps getting rebuilt with each new technology that promises to make it real this time.
+
+The latest rebuild came from Balaji Srinivasan, and it's a genuinely clever piece of theory. The [network state](https://www.goodreads.com/book/show/60643059-the-network-state) argument goes: the internet lets like-minded people find each other across borders first, build a real community with its own norms and even its own money, and only then go looking for physical land — crowdfunded, scattered, stitched together by the network rather than by geography — with formal sovereignty as the eventual, hard-won endpoint, not the starting assumption. It's not "let's go build a country." It's "let's build the nation first and see if a country falls out of it." As theory, it's interesting enough that serious people took it seriously.
+
+## The theory meets Forest City
+
+The first real attempt to make this physical was the [Network School](https://medium.com/@thevalleylife/book-summary-the-network-state-e1931e2f9c01), and the site he picked was almost too on-the-nose: [Forest City](https://fortune.com/2026/07/26/network-school-balaji-srinivasan-malaysia-johor-israel-kazakhstan/), a half-built, largely abandoned Chinese real-estate megaproject in Johor, Malaysia, just across the strait from Singapore. Digital nomads showed up. Content got made. For a while, it looked like exactly the kind of proof-of-concept the theory needed.
+
+Then, this past July, the nation-state system reminded everyone whose house they were actually standing in.
+
+It started with a rumor — social media claims that Israeli nationals were participating using second passports, in a country where that's a genuinely live political nerve. Malaysia's Home Ministry and Johor state officials opened a formal probe, and the prime minister himself said any Israeli nationals found would be [deported immediately](https://www.thestar.com.my/news/nation/2026/07/15/malaysia-to-immediately-deport-any-israeli-nationals-involved-in-network-school-says-anwar). The immigration angle, in the end, mostly evaporated — officials inspected 266 foreign nationals and found valid documents, though they've said they still can't [trace 19 individuals](https://www.visaverge.com/immigration/malaysia-probes-dual-citizens-at-johor-network-school-orders-deportation-of-israeli-nationals/) connected to the program. But once the state's attention was on the place, it didn't need the original rumor to be true to act. Local authorities pivoted to licensing, found real violations, and on July 21 the Iskandar Puteri city council [revoked Network School's business license outright](https://www.theblock.co/post/409076/malaysia-shuts-down-balaji-srinivasans-network-school-forest-city). Operations in Forest City ceased the next day.
+
+I don't think the passport rumor was ever really the point. A four-year-old project quietly running events for digital nomads is invisible to a government. A project that publicly frames itself as a prototype for sovereign territory is not. Once Malaysia noticed what the pitch actually was, it took about a week to end it.
+
+Srinivasan didn't sit still. Within roughly 24 hours of the license getting pulled, he'd [signed an MoU with Kazakhstan's Ministry of AI and Digital Development](https://cryptobriefing.com/network-school-relocates-kazakhstan-malaysia-shutdown/) to open the next campus there, reportedly with fast-track visas and eased redomiciliation attached. Kazakhstan gets a headline about being a tech-forward jurisdiction; Network School gets a landing pad. Nobody involved appears to be under any illusion about who granted permission for this to happen.
+
+## Force is the whole ballgame
+
+Here's the lesson I keep coming back to: modern states are, underneath all the branding, backed by force. And the evidence for what happens when that backing disappears is not "utopia breaks out." It's [Yemen](https://www.csis.org/analysis/yemen-and-warfare-failed-states). It's [Libya](https://dergipark.org.tr/en/pub/itobiad/article/1585083). Weak or collapsed states don't default to some emergent, voluntary, better-aligned order — they default to whichever faction has the most guns, and everyone else absorbs the consequences. Nowhere in the historical record does the removal of state capacity reliably produce a freer, happier populace. It produces a vacuum, and vacuums get filled by whoever's willing to fight hardest for them.
+
+The one case that looks like a counterexample is the founding of the United States itself, and even that one doesn't actually help the network-state argument much on close reading. The colonies didn't start as some spontaneous voluntary association — they were settlements under British sovereignty from day one. Independence wasn't declared and then peacefully conceded; it was fought for, for eight years, at real cost. If there's a template here, it's "sovereignty gets granted to those willing to win a war for it," and I have real doubts about how many passport bros and content creators currently living the laptop lifestyle are signed up for that version of the deal.
+
+## The trade-off nobody in this scene wants to name
+
+Living inside any society is a trade-off — between your own maximal freedom and the basic requirements of not living alone in the woods, and every one of us makes that trade constantly without noticing. The existence of roughly 190 different nation states, each striking that trade-off slightly differently, gives some people real choice about which bargain suits them best. But that choice is not universal, and it's worth sitting with how unusual it actually is. Someone born in North Korea doesn't get to decide he dislikes the freedom-for-equality trade the Kim dynasty offers and simply relocate. States don't just set the terms of participation — plenty of them also control, directly, whether you're allowed to leave at all.
+
+The tech nomads who moved from Malaysia to Kazakhstan without much friction could do that precisely because Malaysia and Kazakhstan are both strong, internationally recognized states that have negotiated visa and travel arrangements with each other and with the nomads' home countries. That mobility is a service the state system provides — not something that exists in spite of it. Try enrolling in the Network School holding a passport issued by no state at all, or by one nobody else recognizes, and see how far the theory of self-sovereignty gets you at immigration.
+
+The impulse isn't going anywhere. There'll be another [seasteading](https://www.seasteading.org/history/) pitch, another network state, another founder convinced that the right acronym and a crowdfunded parcel of land add up to a country — the idea is too old and too flattering to stay buried for long. But sovereignty was never a feature you ship. It's the thing states have fought each other over for centuries before anyone got to keep it. Balaji found that out in about three weeks, from a licensing office in a half-built Chinese suburb of Johor. Whoever tries this next will find it out too, wherever they land.
