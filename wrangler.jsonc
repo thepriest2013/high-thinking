@@ -1,7 +1,16 @@
 {
   "name": "high-thinking",
   "compatibility_date": "2026-07-19",
+  "main": "worker/index.ts",
   "assets": {
-    "directory": "./dist"
-  }
+    "directory": "./dist",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "high-thinking-comments",
+      "database_id": "6348c7d2-951a-4e3f-bd04-6dbe1c0063cd"
+    }
+  ]
 }

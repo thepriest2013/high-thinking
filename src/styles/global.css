@@ -179,6 +179,157 @@ article p {
   max-width: 65ch;
 }
 
+.comments {
+  margin-top: 64px;
+  padding-top: 32px;
+  border-top: 1px solid var(--hairline);
+}
+
+.comments h2 {
+  font-weight: 400;
+  margin-top: 0;
+}
+
+.comment-list {
+  list-style: none;
+  margin: 0 0 32px;
+  padding: 0;
+}
+
+.comment {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.comment-author {
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.comment-date {
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 12px;
+  color: var(--ink-muted);
+  margin-left: 8px;
+}
+
+.comment-body {
+  margin: 6px 0 0;
+  white-space: pre-wrap;
+}
+
+.comment-empty {
+  color: var(--ink-muted);
+  font-size: 14px;
+}
+
+.comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 500px;
+}
+
+.comment-form label {
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 13px;
+  color: var(--ink-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.comment-form input[type='text'],
+.comment-form textarea {
+  font: inherit;
+  color: var(--ink);
+  background: var(--bg-elevated);
+  border: 1px solid var(--hairline);
+  border-radius: 4px;
+  padding: 10px 12px;
+  resize: vertical;
+}
+
+.comment-form textarea {
+  min-height: 100px;
+}
+
+.comment-form button {
+  align-self: flex-start;
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--accent);
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.comment-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.comment-status {
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+
+.comment-status[data-tone='error'] {
+  color: #c0392b;
+}
+
+.admin-token-label {
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 13px;
+  color: var(--ink-muted);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.admin-token-row {
+  display: flex;
+  gap: 8px;
+  max-width: 400px;
+  margin-bottom: 24px;
+}
+
+.admin-token-row input {
+  flex: 1;
+  font: inherit;
+  color: var(--ink);
+  background: var(--bg-elevated);
+  border: 1px solid var(--hairline);
+  border-radius: 4px;
+  padding: 8px 12px;
+}
+
+.admin-token-row button,
+.comment button {
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--accent);
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.comment-honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 site-footer,
 .site-footer {
   margin-top: 64px;

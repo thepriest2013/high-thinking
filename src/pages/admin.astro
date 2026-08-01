@@ -1,0 +1,147 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Admin — High Thinking">
+  <h1 style="font-weight:400;">Pending Comments</h1>
+
+  <div id="admin-auth">
+    <label class="admin-token-label" for="admin-token">Admin token</label>
+    <div class="admin-token-row">
+      <input type="password" id="admin-token" autocomplete="off" />
+      <button type="button" id="admin-unlock">Unlock</button>
+    </div>
+    <p class="comment-status" id="admin-status" hidden></p>
+  </div>
+
+  <ul class="comment-list" id="admin-list" hidden></ul>
+</BaseLayout>
+
+<script>
+  interface PendingComment {
+    id: number;
+    post_slug: string;
+    author_name: string;
+    body: string;
+    created_at: string;
+  }
+
+  const STORAGE_KEY = 'ht_admin_token';
+
+  const authBox = document.getElementById('admin-auth')!;
+  const tokenInput = document.getElementById('admin-token') as HTMLInputElement;
+  const unlockBtn = document.getElementById('admin-unlock')!;
+  const status = document.getElementById('admin-status')!;
+  const list = document.getElementById('admin-list')!;
+
+  function showStatus(message: string, tone: 'ok' | 'error') {
+    status.textContent = message;
+    status.dataset.tone = tone;
+    status.hidden = false;
+  }
+
+  function authHeader(token: string) {
+    return { authorization: `Bearer ${token}` };
+  }
+
+  async function fetchPending(token: string): Promise<PendingComment[] | null> {
+    const res = await fetch('/api/admin/comments', { headers: authHeader(token) });
+    if (res.status === 401) return null;
+    if (!res.ok) throw new Error('failed to load');
+    return res.json();
+  }
+
+  function renderPending(token: string, comments: PendingComment[]) {
+    list.innerHTML = '';
+    list.hidden = false;
+
+    if (comments.length === 0) {
+      const li = document.createElement('li');
+      li.className = 'comment-empty';
+      li.textContent = 'Nothing pending.';
+      list.appendChild(li);
+      return;
+    }
+
+    for (const c of comments) {
+      const li = document.createElement('li');
+      li.className = 'comment';
+
+      const meta = document.createElement('div');
+      const slugTag = document.createElement('span');
+      slugTag.className = 'category-tag';
+      slugTag.textContent = c.post_slug;
+      const author = document.createElement('span');
+      author.className = 'comment-author';
+      author.style.marginLeft = '8px';
+      author.textContent = c.author_name;
+      const date = document.createElement('span');
+      date.className = 'comment-date';
+      date.textContent = c.created_at;
+      meta.append(slugTag, author, date);
+
+      const body = document.createElement('p');
+      body.className = 'comment-body';
+      body.textContent = c.body;
+
+      const actions = document.createElement('div');
+      actions.style.display = 'flex';
+      actions.style.gap = '8px';
+
+      const approveBtn = document.createElement('button');
+      approveBtn.type = 'button';
+      approveBtn.textContent = 'Approve';
+      approveBtn.addEventListener('click', () => act(token, c.id, 'approve'));
+
+      const rejectBtn = document.createElement('button');
+      rejectBtn.type = 'button';
+      rejectBtn.textContent = 'Reject';
+      rejectBtn.addEventListener('click', () => act(token, c.id, 'reject'));
+
+      actions.append(approveBtn, rejectBtn);
+      li.append(meta, body, actions);
+      list.appendChild(li);
+    }
+  }
+
+  async function act(token: string, id: number, action: 'approve' | 'reject') {
+    try {
+      const res = await fetch(`/api/admin/comments/${id}/${action}`, {
+        method: 'POST',
+        headers: authHeader(token),
+      });
+      if (!res.ok) throw new Error('action failed');
+      await unlock(token);
+    } catch {
+      showStatus('Action failed — try again.', 'error');
+    }
+  }
+
+  async function unlock(token: string) {
+    try {
+      const comments = await fetchPending(token);
+      if (comments === null) {
+        localStorage.removeItem(STORAGE_KEY);
+        showStatus('Invalid token.', 'error');
+        list.hidden = true;
+        return;
+      }
+      localStorage.setItem(STORAGE_KEY, token);
+      status.hidden = true;
+      renderPending(token, comments);
+    } catch {
+      showStatus('Could not reach the server.', 'error');
+    }
+  }
+
+  unlockBtn.addEventListener('click', () => {
+    const token = tokenInput.value.trim();
+    if (token) unlock(token);
+  });
+
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    tokenInput.value = saved;
+    unlock(saved);
+  }
+</script>

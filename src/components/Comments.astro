@@ -1,0 +1,150 @@
+---
+export interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+// Turnstile site keys are meant to be public/client-visible, so this is safe to hardcode.
+const turnstileSiteKey = '0x4AAAAAAEDaQdhxskzYLrrQ';
+---
+
+<section class="comments" id="comments" data-slug={slug}>
+  <h2>Comments</h2>
+  <ul class="comment-list" id="comment-list">
+    <li class="comment-empty">Loading comments…</li>
+  </ul>
+
+  <form class="comment-form" id="comment-form">
+    <label>
+      Name
+      <input type="text" name="name" required maxlength="80" autocomplete="name" />
+    </label>
+    <label>
+      Comment
+      <textarea name="text" required maxlength="3000"></textarea>
+    </label>
+    <div class="comment-honeypot" aria-hidden="true">
+      <label>
+        Website
+        <input type="text" name="website" tabindex="-1" autocomplete="off" />
+      </label>
+    </div>
+    <div class="cf-turnstile" data-sitekey={turnstileSiteKey}></div>
+    <button type="submit">Post comment</button>
+    <p class="comment-status" id="comment-status" hidden></p>
+  </form>
+</section>
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+<script>
+  interface Comment {
+    name: string;
+    text: string;
+    created_at: string;
+  }
+
+  const dateFmt = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+  const section = document.getElementById('comments')!;
+  const slug = section.dataset.slug!;
+  const list = document.getElementById('comment-list')!;
+  const form = document.getElementById('comment-form') as HTMLFormElement;
+  const status = document.getElementById('comment-status')!;
+
+  function emptyState(message: string) {
+    list.innerHTML = '';
+    const li = document.createElement('li');
+    li.className = 'comment-empty';
+    li.textContent = message;
+    list.appendChild(li);
+  }
+
+  function renderComments(comments: Comment[]) {
+    list.innerHTML = '';
+    if (comments.length === 0) {
+      emptyState('No comments yet — be the first.');
+      return;
+    }
+
+    for (const c of comments) {
+      const li = document.createElement('li');
+      li.className = 'comment';
+
+      const meta = document.createElement('div');
+      const author = document.createElement('span');
+      author.className = 'comment-author';
+      author.textContent = c.name;
+
+      const date = document.createElement('span');
+      date.className = 'comment-date';
+      const parsed = new Date(`${c.created_at.replace(' ', 'T')}Z`);
+      date.textContent = Number.isNaN(parsed.getTime()) ? '' : dateFmt.format(parsed);
+
+      meta.append(author, date);
+
+      const body = document.createElement('p');
+      body.className = 'comment-body';
+      body.textContent = c.text;
+
+      li.append(meta, body);
+      list.appendChild(li);
+    }
+  }
+
+  async function loadComments() {
+    try {
+      const res = await fetch(`/api/comments?slug=${encodeURIComponent(slug)}`);
+      if (!res.ok) throw new Error('failed to load');
+      renderComments(await res.json());
+    } catch {
+      emptyState('Could not load comments right now.');
+    }
+  }
+
+  function showStatus(message: string, tone: 'ok' | 'error') {
+    status.textContent = message;
+    status.dataset.tone = tone;
+    status.hidden = false;
+  }
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const data = new FormData(form);
+    const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+    submitBtn.disabled = true;
+
+    const turnstile = (window as typeof window & { turnstile?: { getResponse(): string; reset(): void } })
+      .turnstile;
+    const turnstileToken = turnstile?.getResponse() ?? '';
+
+    try {
+      const res = await fetch('/api/comments', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          slug,
+          name: data.get('name'),
+          text: data.get('text'),
+          hp: data.get('website'),
+          turnstileToken,
+        }),
+      });
+      const result = (await res.json()) as { message?: string; error?: string };
+
+      if (!res.ok) {
+        showStatus(result.error ?? 'Something went wrong.', 'error');
+      } else {
+        showStatus(result.message ?? 'Thanks — your comment is awaiting approval.', 'ok');
+        form.reset();
+        turnstile?.reset();
+      }
+    } catch {
+      showStatus('Network error — please try again.', 'error');
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+
+  loadComments();
+</script>

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Comments from '../../components/Comments.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -32,5 +33,6 @@ const categoryLabel: Record<string, string> = {
     </p>
     <Content />
   </article>
+  <Comments slug={post.id} />
   <p><a href="/blog/">&larr; Back to archive</a></p>
 </BaseLayout>
